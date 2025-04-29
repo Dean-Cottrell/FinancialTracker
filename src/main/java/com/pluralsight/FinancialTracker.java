@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-    public static class financialTracker {
+public static class financialTracker {
     private static final List<Transaction> transactions = new ArrayList<>();
     private static final String FILE_NAME = "transactions.csv";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -103,10 +103,7 @@ import java.util.Scanner;
             if (amount > 0) {
                 Transaction deposit = new Transaction(date, time, description, vendor, amount);
                 transactions.add(deposit);
-
-                System.out.println("Saving: " + deposit);
                 saveTransactionToFile(deposit);
-
                 System.out.println("Deposit added successfully!");
             } else {
                 System.out.println("Error: Deposit amount must be positive.");
@@ -116,21 +113,36 @@ import java.util.Scanner;
         }
     }
 
+    private static void addPayment(Scanner scanner) {
+        System.out.println("Enter payment details:");
+        System.out.print("Date (yyyy-MM-dd): ");
+        LocalDate date = LocalDate.parse(scanner.nextLine().trim(), DATE_FORMATTER);
+        System.out.print("Time (HH:mm:ss): ");
+        LocalTime time = LocalTime.parse(scanner.nextLine().trim(), TIME_FORMATTER);
+        System.out.print("Description: ");
+        String description = scanner.nextLine().trim();
+        System.out.print("Vendor: ");
+        String vendor = scanner.nextLine().trim();
+        System.out.print("Amount (negative value for expense): ");
+        double amount = Double.parseDouble(scanner.nextLine().trim());
+
+        if (amount < 0) {
+            Transaction payment = new Transaction(date, time, description, vendor, amount);
+            transactions.add(payment);
+            saveTransactionToFile(payment);
+            System.out.println("Payment recorded successfully!");
+        } else {
+            System.out.println("Error: Payment amount must be negative.");
+        }
+    }
+
     private static void saveTransactionToFile(Transaction transaction) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_NAME, true))) {
-            pw.println(transaction.date() + "|" + transaction.time() + "|" +
-                    transaction.description() + "|" + transaction.vendor() + "|" + transaction.amount());
+            pw.println(transaction.date + "|" + transaction.time + "|" +
+                    transaction.description + "|" + transaction.vendor + "|" + transaction.amount);
         } catch (IOException e) {
             System.out.println("Error saving transaction: " + e.getMessage());
         }
-    }
-}
-    private static void addPayment(Scanner scanner) {
-        // This method should prompt the user to enter the date, time, description, vendor, and amount of a payment.
-        // The user should enter the date and time in the following format: yyyy-MM-dd HH:mm:ss
-        // The amount received should be a positive number then transformed to a negative number.
-        // After validating the input, a new `Transaction` object should be created with the entered values.
-        // The new payment should be added to the `transactions` ArrayList.
     }
 
     private static void ledgerMenu(Scanner scanner) {
@@ -138,7 +150,7 @@ import java.util.Scanner;
         while (running) {
             System.out.println("Ledger");
             System.out.println("Choose an option:");
-            System.out.println("A) A`ll");
+            System.out.println("A) All");
             System.out.println("D) Deposits");
             System.out.println("P) Payments");
             System.out.println("R) Reports");
@@ -161,12 +173,16 @@ import java.util.Scanner;
                     break;
                 case "H":
                     running = false;
+                    break;
                 default:
                     System.out.println("Invalid option");
                     break;
             }
         }
     }
+
+    public record Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {}
+}
 
     private static void displayLedger() {
         // This method should display a table of all transactions in the `transactions` ArrayList.
