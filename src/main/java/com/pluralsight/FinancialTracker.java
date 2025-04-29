@@ -1,9 +1,15 @@
 package com.pluralsight;
 
+import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.List;
 
 public class FinancialTracker {
 
@@ -47,20 +53,42 @@ public class FinancialTracker {
                     break;
             }
         }
-
         scanner.close();
     }
 
     public static void loadTransactions(String fileName) {
-        // This method should load transactions from a file with the given file name.
-        // If the file does not exist, it should be created.
-        // The transactions should be stored in the `transactions` ArrayList.
-        // Each line of the file represents a single transaction in the following format:
-        // <date>|<time>|<description>|<vendor>|<amount>
-        // For example: 2023-04-15|10:13:25|ergonomic keyboard|Amazon|-89.50
-        // After reading all the transactions, the file should be closed.
-        // If any errors occur, an appropriate error message should be displayed.
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                Transaction transaction = parseTransaction(line);
+                if (transaction != null) {
+                    transactions.add(transaction);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error loading transactions: " + e.getMessage());
+        }
     }
+
+    private static Transaction parseTransaction(String line) {
+        String[] tokens = line.split("\\|");
+        if (tokens.length != 5) {
+            System.out.println("Error: Invalid transaction format - " + line);
+            return null;
+        }
+        try {
+            LocalDate date = LocalDate.parse(tokens[0].trim(), DATE_FORMATTER);
+            LocalTime time = LocalTime.parse(tokens[1].trim(), TIME_FORMATTER);
+            String description = tokens[2].trim();
+            String vendor = tokens[3].trim();
+            double amount = Double.parseDouble(tokens[4].trim());
+            return new Transaction(date, time, description, vendor, amount);
+        } catch (Exception e) {
+            System.out.println("Error parsing transaction: " + line);
+            return null;
+        }
+    }
+
 
     private static void addDeposit(Scanner scanner) {
         // This method should prompt the user to enter the date, time, description, vendor, and amount of a deposit.
@@ -194,5 +222,8 @@ public class FinancialTracker {
     }
 
     private static class Transaction {
+        public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {
+
+        }
     }
 }
