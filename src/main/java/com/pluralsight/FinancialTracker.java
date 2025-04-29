@@ -25,7 +25,7 @@ public class FinancialTracker {
             System.out.println("Welcome to TransactionApp");
             System.out.println("Choose an option:");
             System.out.println("D) Add Deposit");
-            System.out.println("P) Make Payment (Debit)");
+            System.out.println("P) Make Payment ");
             System.out.println("L) Ledger");
             System.out.println("R) Reports");
             System.out.println("X) Exit");
@@ -186,20 +186,20 @@ public class FinancialTracker {
     }
 
     private static void displayLedger() {
+        System.out.println("\n--- Ledger ---");
+
         if (transactions.isEmpty()) {
             System.out.println("No transactions found.");
             return;
         }
 
-        System.out.printf("\n%-12s %-10s %-20s %-15s %-10s%n", "Date", "Time", "Description", "Vendor", "Amount");
-        System.out.println("-----------------------------------------------------------");
-
         for (Transaction transaction : transactions) {
-            System.out.printf("%-12s %-10s %-20s %-15s $%-10.2f%n",
-                    transaction.date(), transaction.time(),
-                    transaction.description(), transaction.vendor(),
-                    transaction.amount());
+            System.out.println(transaction.date() + " | " + transaction.time() + " | " +
+                    transaction.description() + " | " + transaction.vendor() + " | $" +
+                    String.format("%.2f", transaction.amount()));
         }
+
+        System.out.println("----------------");
     }
 
     private static void displayDeposits() {
