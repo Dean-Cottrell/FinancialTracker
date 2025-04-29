@@ -1,19 +1,15 @@
 package com.pluralsight;
 
 import java.io.*;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.List;
+import java.util.Scanner;
 
-public class FinancialTracker {
-
-    private static ArrayList<Transaction> transactions = new ArrayList<Transaction>();
+    public static class financialTracker {
+    private static final List<Transaction> transactions = new ArrayList<>();
     private static final String FILE_NAME = "transactions.csv";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
     private static final String TIME_FORMAT = "HH:mm:ss";
@@ -89,15 +85,46 @@ public class FinancialTracker {
         }
     }
 
-
     private static void addDeposit(Scanner scanner) {
-        // This method should prompt the user to enter the date, time, description, vendor, and amount of a deposit.
-        // The user should enter the date and time in the following format: yyyy-MM-dd HH:mm:ss
-        // The amount should be a positive number.
-        // After validating the input, a new `Transaction` object should be created with the entered values.
-        // The new deposit should be added to the `transactions` ArrayList.
+        System.out.println("\nEnter deposit details:");
+        System.out.print("Date (yyyy-MM-dd): ");
+        LocalDate date = LocalDate.parse(scanner.nextLine().trim(), DATE_FORMATTER);
+        System.out.print("Time (HH:mm:ss): ");
+        LocalTime time = LocalTime.parse(scanner.nextLine().trim(), TIME_FORMATTER);
+        System.out.print("Description: ");
+        String description = scanner.nextLine().trim();
+        System.out.print("Vendor: ");
+        String vendor = scanner.nextLine().trim();
+        System.out.print("Amount: ");
+
+        try {
+            double amount = Double.parseDouble(scanner.nextLine().trim());
+
+            if (amount > 0) {
+                Transaction deposit = new Transaction(date, time, description, vendor, amount);
+                transactions.add(deposit);
+
+                System.out.println("Saving: " + deposit);
+                saveTransactionToFile(deposit);
+
+                System.out.println("Deposit added successfully!");
+            } else {
+                System.out.println("Error: Deposit amount must be positive.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Amount must be a valid number.");
+        }
     }
 
+    private static void saveTransactionToFile(Transaction transaction) {
+        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_NAME, true))) {
+            pw.println(transaction.date() + "|" + transaction.time() + "|" +
+                    transaction.description() + "|" + transaction.vendor() + "|" + transaction.amount());
+        } catch (IOException e) {
+            System.out.println("Error saving transaction: " + e.getMessage());
+        }
+    }
+}
     private static void addPayment(Scanner scanner) {
         // This method should prompt the user to enter the date, time, description, vendor, and amount of a payment.
         // The user should enter the date and time in the following format: yyyy-MM-dd HH:mm:ss

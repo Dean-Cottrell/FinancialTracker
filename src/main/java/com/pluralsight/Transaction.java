@@ -25,4 +25,8 @@ public class Transaction {
     public String getDescription() { return description; }
     public String getVendor() { return vendor; }
     public double getAmount() { return amount; }
+
+    public boolean date() {
+        return false;
+    }
 }
