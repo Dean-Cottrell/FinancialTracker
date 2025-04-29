@@ -185,6 +185,14 @@ public class FinancialTracker {
         // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
     }
 
+    public static ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public static void setTransactions(ArrayList<Transaction> transactions) {
+        FinancialTracker.transactions = transactions;
+    }
+
     private static class Transaction {
     }
 }
