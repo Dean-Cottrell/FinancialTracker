@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public static class financialTracker {
+public class FinancialTracker {
     private static final List<Transaction> transactions = new ArrayList<>();
     private static final String FILE_NAME = "transactions.csv";
     private static final String DATE_FORMAT = "yyyy-MM-dd";
@@ -27,11 +27,12 @@ public static class financialTracker {
             System.out.println("D) Add Deposit");
             System.out.println("P) Make Payment (Debit)");
             System.out.println("L) Ledger");
+            System.out.println("R) Reports");
             System.out.println("X) Exit");
 
-            String input = scanner.nextLine().trim();
+            String input = scanner.nextLine().trim().toUpperCase();
 
-            switch (input.toUpperCase()) {
+            switch (input) {
                 case "D":
                     addDeposit(scanner);
                     break;
@@ -40,6 +41,9 @@ public static class financialTracker {
                     break;
                 case "L":
                     ledgerMenu(scanner);
+                    break;
+                case "R":
+                    reportsMenu(scanner);
                     break;
                 case "X":
                     running = false;
@@ -138,8 +142,8 @@ public static class financialTracker {
 
     private static void saveTransactionToFile(Transaction transaction) {
         try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_NAME, true))) {
-            pw.println(transaction.date + "|" + transaction.time + "|" +
-                    transaction.description + "|" + transaction.vendor + "|" + transaction.amount);
+            pw.println(transaction.date() + "|" + transaction.time() + "|" +
+                    transaction.description() + "|" + transaction.vendor() + "|" + transaction.amount());
         } catch (IOException e) {
             System.out.println("Error saving transaction: " + e.getMessage());
         }
@@ -156,9 +160,9 @@ public static class financialTracker {
             System.out.println("R) Reports");
             System.out.println("H) Home");
 
-            String input = scanner.nextLine().trim();
+            String input = scanner.nextLine().trim().toUpperCase();
 
-            switch (input.toUpperCase()) {
+            switch (input) {
                 case "A":
                     displayLedger();
                     break;
@@ -181,22 +185,45 @@ public static class financialTracker {
         }
     }
 
-    public record Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {}
-}
-
     private static void displayLedger() {
-        // This method should display a table of all transactions in the `transactions` ArrayList.
-        // The table should have columns for date, time, description, vendor, and amount.
+        if (transactions.isEmpty()) {
+            System.out.println("No transactions found.");
+            return;
+        }
+
+        System.out.printf("\n%-12s %-10s %-20s %-15s %-10s%n", "Date", "Time", "Description", "Vendor", "Amount");
+        System.out.println("-----------------------------------------------------------");
+
+        for (Transaction transaction : transactions) {
+            System.out.printf("%-12s %-10s %-20s %-15s $%-10.2f%n",
+                    transaction.date(), transaction.time(),
+                    transaction.description(), transaction.vendor(),
+                    transaction.amount());
+        }
     }
 
     private static void displayDeposits() {
-        // This method should display a table of all deposits in the `transactions` ArrayList.
-        // The table should have columns for date, time, description, vendor, and amount.
+        System.out.println("\n---- Deposits ----");
+
+        for (Transaction transaction : transactions) {
+            if (transaction.amount() > 0) {
+                System.out.println(transaction);
+            }
+        }
+
+        System.out.println("------------------");
     }
 
     private static void displayPayments() {
-        // This method should display a table of all payments in the `transactions` ArrayList.
-        // The table should have columns for date, time, description, vendor, and amount.
+        System.out.println("\n---- Payments ----");
+
+        for (Transaction transaction : transactions) {
+            if (transaction.amount() < 0) {
+                System.out.println(transaction);
+            }
+        }
+
+        System.out.println("------------------");
     }
 
     private static void reportsMenu(Scanner scanner) {
@@ -212,61 +239,43 @@ public static class financialTracker {
             System.out.println("0) Back");
 
             String input = scanner.nextLine().trim();
-
-            switch (input) {
-                case "1":
-                    // Generate a report for all transactions within the current month,
-                    // including the date, time, description, vendor, and amount for each transaction.
-                case "2":
-                    // Generate a report for all transactions within the previous month,
-                    // including the date, time, description, vendor, and amount for each transaction.
-                case "3":
-                    // Generate a report for all transactions within the current year,
-                    // including the date, time, description, vendor, and amount for each transaction.
-
-                case "4":
-                    // Generate a report for all transactions within the previous year,
-                    // including the date, time, description, vendor, and amount for each transaction.
-                case "5":
-                    // Prompt the user to enter a vendor name, then generate a report for all transactions
-                    // with that vendor, including the date, time, description, vendor, and amount for each transaction.
-                case "0":
-                    running = false;
-                default:
-                    System.out.println("Invalid option");
-                    break;
+            if (input.equals("0")) running = false;
+            else {
+                generateReports(input, scanner);
             }
         }
     }
 
-
-    private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
-        // This method filters the transactions by date and prints a report to the console.
-        // It takes two parameters: startDate and endDate, which represent the range of dates to filter by.
-        // The method loops through the transactions list and checks each transaction's date against the date range.
-        // Transactions that fall within the date range are printed to the console.
-        // If no transactions fall within the date range, the method prints a message indicating that there are no results.
-    }
-
-    private static void filterTransactionsByVendor(String vendor) {
-        // This method filters the transactions by vendor and prints a report to the console.
-        // It takes one parameter: vendor, which represents the name of the vendor to filter by.
-        // The method loops through the transactions list and checks each transaction's vendor name against the specified vendor name.
-        // Transactions with a matching vendor name are printed to the console.
-        // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
-    }
-
-    public static ArrayList<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public static void setTransactions(ArrayList<Transaction> transactions) {
-        FinancialTracker.transactions = transactions;
-    }
-
-    private static class Transaction {
-        public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {
-
+    private static void generateReports(String option, Scanner scanner) {
+        switch (option) {
+            case "1" -> generateMonthToDateReport();
+            case "2" -> generatePreviousMonthReport();
+            case "3" -> generateYearToDateReport();
+            case "4" -> generatePreviousYearReport();
+            case "5" -> {
+                System.out.print("Enter vendor name: ");
+                scanner.nextLine();
+                filterTransactionsByVendor();
+            }
+            default -> System.out.println("Invalid option.");
         }
-    }
 }
+
+    private static void filterTransactionsByVendor() {
+    }
+
+    private static void generateMonthToDateReport() {
+}
+
+    private static void generatePreviousMonthReport() {
+}
+
+    private static void generateYearToDateReport() {
+}
+
+    private static void generatePreviousYearReport() {
+}
+
+}
+
+

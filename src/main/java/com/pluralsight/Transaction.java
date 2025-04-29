@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Transaction {
-    private final LocalDate date;
-    private final LocalTime time;
-    private final String description;
-    private final String vendor;
-    private final double amount;
+    protected final LocalDate date;
+    protected final LocalTime time;
+    protected final String description;
+    protected final String vendor;
+    protected final double amount;
 
 
     public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {
@@ -28,5 +28,21 @@ public class Transaction {
 
     public boolean date() {
         return false;
+    }
+
+    public int amount() {
+        return 0;
+    }
+
+    public Object time() {
+        return null;
+    }
+
+    public Object description() {
+        return null;
+    }
+
+    public Object vendor() {
+        return null;
     }
 }
