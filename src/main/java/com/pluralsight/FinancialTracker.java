@@ -25,9 +25,8 @@ public class FinancialTracker {
             System.out.println("Welcome to TransactionApp");
             System.out.println("Choose an option:");
             System.out.println("D) Add Deposit");
-            System.out.println("P) Make Payment ");
+            System.out.println("P) Make Payment");
             System.out.println("L) Ledger");
-            System.out.println("R) Reports");
             System.out.println("X) Exit");
 
             String input = scanner.nextLine().trim().toUpperCase();
@@ -40,10 +39,7 @@ public class FinancialTracker {
                     addPayment(scanner);
                     break;
                 case "L":
-                    ledgerMenu(scanner);
-                    break;
-                case "R":
-                    reportsMenu(scanner);
+                    displayLedger();
                     break;
                 case "X":
                     running = false;
@@ -60,6 +56,9 @@ public class FinancialTracker {
         try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
             String line;
             while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) continue;
+
                 Transaction transaction = parseTransaction(line);
                 if (transaction != null) {
                     transactions.add(transaction);
@@ -72,19 +71,22 @@ public class FinancialTracker {
 
     private static Transaction parseTransaction(String line) {
         String[] tokens = line.split("\\|");
+
         if (tokens.length != 5) {
             System.out.println("Error: Invalid transaction format - " + line);
             return null;
         }
+
         try {
             LocalDate date = LocalDate.parse(tokens[0].trim(), DATE_FORMATTER);
             LocalTime time = LocalTime.parse(tokens[1].trim(), TIME_FORMATTER);
             String description = tokens[2].trim();
             String vendor = tokens[3].trim();
             double amount = Double.parseDouble(tokens[4].trim());
+
             return new Transaction(date, time, description, vendor, amount);
         } catch (Exception e) {
-            System.out.println("Error parsing transaction: " + line);
+            System.out.println("Error: Unable to parse transaction - " + line);
             return null;
         }
     }
@@ -103,7 +105,6 @@ public class FinancialTracker {
 
         try {
             double amount = Double.parseDouble(scanner.nextLine().trim());
-
             if (amount > 0) {
                 Transaction deposit = new Transaction(date, time, description, vendor, amount);
                 transactions.add(deposit);
@@ -118,7 +119,7 @@ public class FinancialTracker {
     }
 
     private static void addPayment(Scanner scanner) {
-        System.out.println("Enter payment details:");
+        System.out.println("\nEnter payment details:");
         System.out.print("Date (yyyy-MM-dd): ");
         LocalDate date = LocalDate.parse(scanner.nextLine().trim(), DATE_FORMATTER);
         System.out.print("Time (HH:mm:ss): ");
@@ -141,47 +142,13 @@ public class FinancialTracker {
     }
 
     private static void saveTransactionToFile(Transaction transaction) {
-        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_NAME, true))) {
-            pw.println(transaction.date() + "|" + transaction.time() + "|" +
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
+            bw.write(transaction.date() + "|" + transaction.time() + "|" +
                     transaction.description() + "|" + transaction.vendor() + "|" + transaction.amount());
+            bw.newLine();
+            bw.flush();
         } catch (IOException e) {
             System.out.println("Error saving transaction: " + e.getMessage());
-        }
-    }
-
-    private static void ledgerMenu(Scanner scanner) {
-        boolean running = true;
-        while (running) {
-            System.out.println("Ledger");
-            System.out.println("Choose an option:");
-            System.out.println("A) All");
-            System.out.println("D) Deposits");
-            System.out.println("P) Payments");
-            System.out.println("R) Reports");
-            System.out.println("H) Home");
-
-            String input = scanner.nextLine().trim().toUpperCase();
-
-            switch (input) {
-                case "A":
-                    displayLedger();
-                    break;
-                case "D":
-                    displayDeposits();
-                    break;
-                case "P":
-                    displayPayments();
-                    break;
-                case "R":
-                    reportsMenu(scanner);
-                    break;
-                case "H":
-                    running = false;
-                    break;
-                default:
-                    System.out.println("Invalid option");
-                    break;
-            }
         }
     }
 
@@ -276,6 +243,8 @@ public class FinancialTracker {
     private static void generatePreviousYearReport() {
 }
 
+    public record Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {}
 }
+
 
 
