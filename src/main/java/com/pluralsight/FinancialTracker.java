@@ -42,6 +42,7 @@ public class FinancialTracker {
                     displayLedger();
                     break;
                 case "X":
+                    System.out.println("Thank You For Using Dean's Financial Tracker! ");
                     running = false;
                     break;
                 default:
@@ -71,22 +72,19 @@ public class FinancialTracker {
 
     private static Transaction parseTransaction(String line) {
         String[] tokens = line.split("\\|");
-
         if (tokens.length != 5) {
             System.out.println("Error: Invalid transaction format - " + line);
             return null;
         }
-
         try {
             LocalDate date = LocalDate.parse(tokens[0].trim(), DATE_FORMATTER);
             LocalTime time = LocalTime.parse(tokens[1].trim(), TIME_FORMATTER);
             String description = tokens[2].trim();
             String vendor = tokens[3].trim();
             double amount = Double.parseDouble(tokens[4].trim());
-
             return new Transaction(date, time, description, vendor, amount);
         } catch (Exception e) {
-            System.out.println("Error: Unable to parse transaction - " + line);
+            System.out.println("Error parsing transaction: " + line);
             return null;
         }
     }
@@ -128,14 +126,14 @@ public class FinancialTracker {
         String description = scanner.nextLine().trim();
         System.out.print("Vendor: ");
         String vendor = scanner.nextLine().trim();
-        System.out.print("Amount (negative value for expense): ");
+        System.out.print("Amount: ");
         double amount = Double.parseDouble(scanner.nextLine().trim());
 
         if (amount < 0) {
             Transaction payment = new Transaction(date, time, description, vendor, amount);
             transactions.add(payment);
             saveTransactionToFile(payment);
-            System.out.println("Payment recorded successfully!");
+            System.out.println("Payment of " + payment "was recorded successfully!");
         } else {
             System.out.println("Error: Payment amount must be negative.");
         }
@@ -165,69 +163,62 @@ public class FinancialTracker {
                     transaction.description() + " | " + transaction.vendor() + " | $" +
                     String.format("%.2f", transaction.amount()));
         }
+        private static void displayDeposits {
+            System.out.println("\n---- Deposit Transactions ----");
 
-        System.out.println("----------------");
-    }
-
-    private static void displayDeposits() {
-        System.out.println("\n---- Deposits ----");
-
-        for (Transaction transaction : transactions) {
-            if (transaction.amount() > 0) {
-                System.out.println(transaction);
+            if (transactions.isEmpty()) {
+                System.out.println("No deposits recorded yet.");
+                return;
             }
+
+
+            for (Transaction transaction : transactions) {
+                if (transaction.amount() > 0) {
+                    System.out.println(transaction.date() + " | " + transaction.time() + " | " +
+                            transaction.description() + " | " + transaction.vendor() + " | $" +
+                            String.format("%.2f", transaction.amount()));
+                }
+            }
+
+            System.out.println("------------------------------");
         }
 
-        System.out.println("------------------");
-    }
+        private static void displayPayments() {
+            System.out.println("\n---- Payment Transactions ----");
 
-    private static void displayPayments() {
-        System.out.println("\n---- Payments ----");
-
-        for (Transaction transaction : transactions) {
-            if (transaction.amount() < 0) {
-                System.out.println(transaction);
+            if (transactions.isEmpty()) {
+                System.out.println("No payments recorded ");
+                return;
             }
+
+
+            for (Transaction transaction : transactions) {
+                if (transaction.amount() < 0) {
+                    System.out.println(transaction.date() + " | " + transaction.time() + " | " +
+                            transaction.description() + " | " + transaction.vendor() + " | $" +
+                            String.format("%.2f", transaction.amount()));
+                }
+            }
+
+            System.out.println("------------------------------");
         }
 
-        System.out.println("------------------");
+        private static void filterTransactionsByDate(LocalDate startDate, LocalDate endDate) {
+        // This method filters the transactions by date and prints a report to the console.
+        // It takes two parameters: startDate and endDate, which represent the range of dates to filter by.
+        // The method loops through the transactions list and checks each transaction's date against the date range.
+        // Transactions that fall within the date range are printed to the console.
+        // If no transactions fall within the date range, the method prints a message indicating that there are no results.
     }
 
-    private static void reportsMenu(Scanner scanner) {
-        boolean running = true;
-        while (running) {
-            System.out.println("Reports");
-            System.out.println("Choose an option:");
-            System.out.println("1) Month To Date");
-            System.out.println("2) Previous Month");
-            System.out.println("3) Year To Date");
-            System.out.println("4) Previous Year");
-            System.out.println("5) Search by Vendor");
-            System.out.println("0) Back");
-
-            String input = scanner.nextLine().trim();
-            if (input.equals("0")) running = false;
-            else {
-                generateReports(input, scanner);
-            }
-        }
+    private static void filterTransactionsByVendor(String vendor) {
+        // This method filters the transactions by vendor and prints a report to the console.
+        // It takes one parameter: vendor, which represents the name of the vendor to filter by.
+        // The method loops through the transactions list and checks each transaction's vendor name against the specified vendor name.
+        // Transactions with a matching vendor name are printed to the console.
+        // If no transactions match the specified vendor name, the method prints a message indicating that there are no results.
     }
-
-    private static void generateReports(String option, Scanner scanner) {
-        switch (option) {
-            case "1" -> generateMonthToDateReport();
-            case "2" -> generatePreviousMonthReport();
-            case "3" -> generateYearToDateReport();
-            case "4" -> generatePreviousYearReport();
-            case "5" -> {
-                System.out.print("Enter vendor name: ");
-                scanner.nextLine();
-                filterTransactionsByVendor();
-            }
-            default -> System.out.println("Invalid option.");
-        }
 }
-
     private static void filterTransactionsByVendor() {
     }
 
