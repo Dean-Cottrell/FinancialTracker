@@ -1,10 +1,23 @@
-# Project Title
+# Financial Tracker
 
-## Description of the Project
+## Online Banking Simulator
 
-Briefly describe what this Java console application does. Mention its purpose and who the intended users are. Explain the main functionality and what problems it aims to solve.
+This Financial Tracker application is designed to help users manage their transactions efficiently. The primary goal is to provide a simple and structured way for users to filter and analyze their financial records
 
-![Class Diagram](path/to/your/class_diagram.png)
+Purpose & Intended Users
+- Purpose: Enables users to store, categorize, and retrieve transaction records like deposits and payments.
+- Intended Users: Individuals who want a lightweight tool to keep track of their expenses and income without relying on complex financial software.
+
+Main Functionality & Problems It Solves
+- Transaction Logging: it records deposits and payments.
+- Filtering transactions: Users can search by vendor or date range to review transactions
+- File Persistence: Transactions are saved to a file, ensuring data isn’t lost between sessions.
+- Reports Menu: Users can generate financial summaries
+
+By addressing these needs, this project eliminates the hassle of manual record-keeping and enhances financial clarity for users.
+
+
+![Class Diagram](path/to/your/class_diagram.png)nsole a
 
 ## User Stories
 

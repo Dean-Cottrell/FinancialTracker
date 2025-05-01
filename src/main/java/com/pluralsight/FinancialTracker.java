@@ -127,7 +127,7 @@ public class FinancialTracker {
         System.out.print("Vendor: ");
         String Vendor = scanner.nextLine().trim();
         System.out.print("Amount: ");
-        double amount = Double.parseDouble(scanner.nextLine().trim());
+        double amount = Double.parseDouble(scanner.nextLine().trim())*-1;
 
         if (amount < 0) {
             Transaction payment = new Transaction(date, time, description, Vendor, amount);
