@@ -4,11 +4,11 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class Transaction {
-    protected final LocalDate date;
-    protected final LocalTime time;
-    protected final String description;
-    protected final String vendor;
-    protected final double amount;
+    private LocalDate date;
+    private LocalTime time;
+    private String description;
+    private String vendor;
+    private double amount;
 
 
     public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {
@@ -19,30 +19,74 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
 
-    public LocalDate getDate() { return date; }
-    public LocalTime getTime() { return time; }
-    public String getDescription() { return description; }
-    public String getVendor() { return vendor; }
-    public double getAmount() { return amount; }
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
-    public boolean date() {
-        return false;
+    public LocalTime getTime() {
+        return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time = time;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getVendor() {
+        return vendor;
+    }
+
+    public void setVendor(String vendor) {
+        this.vendor = vendor;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "date=" + date +
+                ", time=" + time +
+                ", description='" + description + '\'' +
+                ", vendor='" + vendor + '\'' +
+                ", amount=" + amount +
+                '}';
+    }
+
+    public int date() {
+        return 0;
+    }
+
+    public int time() {
+        return 0;
+    }
+
+    public int vendor() {
+        return 0;
     }
 
     public int amount() {
         return 0;
     }
 
-    public Object time() {
-        return null;
-    }
-
-    public Object description() {
-        return null;
-    }
-
-    public Object vendor() {
-        return null;
+    public int description() {
+        return 0;
     }
 }
