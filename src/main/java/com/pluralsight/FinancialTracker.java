@@ -141,8 +141,8 @@ public class FinancialTracker {
 
     private static void saveTransactionToFile(Transaction transaction) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME, true))) {
-            bw.write(transaction.date() + "|" + transaction.time() + "|" +
-                    transaction.getDescription() + "|" + transaction.vendor() + "|" + transaction.amount());
+            bw.write(transaction.getDate() + "|" + transaction.getTime() + "|" +
+                    transaction.getDescription() + "|" + transaction.getVendor() + "|" + transaction.getAmount());
             bw.newLine();
             bw.flush();
         } catch (IOException e) {
@@ -195,9 +195,9 @@ public class FinancialTracker {
         }
 
         for (Transaction transaction : transactions) {
-            System.out.println(transaction.date() + " | " + transaction.time() + " | " +
-                    transaction.description() + " | " + transaction.vendor() + " | $" +
-                    String.format("%.2f", transaction.amount()));
+            System.out.println(transaction.getDate() + " | " + transaction.getTime() + " | " +
+                    transaction.getDescription() + " | " + transaction.getVendor() + " | $" +
+                    String.format("%.2f", transaction.getAmount()));
         }
     }
 
@@ -211,10 +211,10 @@ public class FinancialTracker {
 
 
         for (Transaction transaction : transactions) {
-            if (transaction.amount() > 0) {
-                System.out.println(transaction.date() + " | " + transaction.time() + " | " +
-                        transaction.description() + " | " + transaction.vendor() + " | $" +
-                        String.format("%.2f", transaction.amount()));
+            if (transaction.getAmount() > 0) {
+                System.out.println(transaction.getDate() + " | " + transaction.getTime() + " | " +
+                        transaction.getDescription() + " | " + transaction.getVendor() + " | $" +
+                        String.format("%.2f", transaction.getAmount()));
             }
         }
 
@@ -231,10 +231,10 @@ public class FinancialTracker {
 
 
         for (Transaction transaction : transactions) {
-            if (transaction.amount() < 0) {
-                System.out.println(transaction.date() + " | " + transaction.time() + " | " +
-                        transaction.description() + " | " + transaction.vendor() + " | $" +
-                        String.format("%.2f", transaction.amount()));
+            if (transaction.getAmount() < 0) {
+                System.out.println(transaction.getDate() + " | " + transaction.getTime() + " | " +
+                        transaction.getDescription() + " | " + transaction.getVendor() + " | $" +
+                        String.format("%.2f", transaction.getAmount()));
             }
         }
 

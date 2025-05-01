@@ -21,10 +21,13 @@ By addressing these needs, this project eliminates the hassle of manual record-k
 
 ## User Stories
 
-List the user stories that guided the development of your application. Format these stories as: "As a [type of user], I want [some goal] so that [some reason]."
-
 - As a user, I want to be able to input my data, so that the application can process it accordingly.
 - As a user, I want to receive immediate feedback, so I can understand what to do next.
+- As a user, I want to input transactions, so that I can maintain a financial record.
+- As a user, I want to search my transactions by vendor, so that I can track spending habits.
+- As a user, I want to filter transactions by date, so that I can review my financial history.
+- As a user, I want to store transactions in a file, so that my data persists across sessions.
+- As a user, I want error handling and validation, so that incorrect inputs don’t crash the program.
 
 ## Setup
 
@@ -33,7 +36,7 @@ Instructions on how to set up and run the project using IntelliJ IDEA.
 ### Prerequisites
 
 - IntelliJ IDEA: Ensure you have IntelliJ IDEA installed, which you can download from [here](https://www.jetbrains.com/idea/download/).
-- Java SDK: Make sure Java SDK is installed and configured in IntelliJ.
+- Java SDK: 17
 
 ### Running the Application in IntelliJ
 
@@ -58,27 +61,22 @@ Include screenshots or GIFs that show your application in action. Use tools like
 
 ## Future Work
 
-Outline potential future enhancements or functionalities you might consider adding:
-
 - Additional feature to be developed.
 - Improvement of current functionalities.
 
 ## Resources
 
-List resources such as tutorials, articles, or documentation that helped you during the project.
+[Raymound past solution] (https://github.com/RayMaroun/yearup-spring-section-10-2025/blob/master/pluralsight/java-development/workbook-3/PayrollCalculator/src/main/java/com/pluralsight/Employee.java)
+[Java Loops] https://www.tutorialspoint.com/java/java_loop_control.htm
+[General Java Help] https://www.tutorialspoint.com/java/index.htm+
 
-- [Java Programming Tutorial](https://www.example.com)
-- [Effective Java](https://www.example.com)
 
-## Team Members
-
-- **Name 1** - Specific contributions or roles.
-- **Name 2** - Specific contributions or roles.
+Team Members
+- Dean - Lead developer, working on transaction filtering and data persistence.
 
 ## Thanks
 
-Express gratitude towards those who provided help, guidance, or resources:
 
-- Thank you to [Mentor's Name] for continuous support and guidance.
+- Thank you to Raymound for continuous support and guidance.
 - A special thanks to all teammates for their dedication and teamwork.
  
