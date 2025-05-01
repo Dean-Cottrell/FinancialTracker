@@ -17,7 +17,6 @@ Main Functionality & Problems It Solves
 By addressing these needs, this project eliminates the hassle of manual record-keeping and enhances financial clarity for users.
 
 
-![Class Diagram](path/to/your/class_diagram.png)nsole a
 
 ## User Stories
 
@@ -55,7 +54,8 @@ Follow these steps to get your application running within IntelliJ IDEA:
 
 ## Demo
 
-Include screenshots or GIFs that show your application in action. Use tools like [Giphy Capture](https://giphy.com/apps/giphycapture) to record a GIF of your application.
+Include screenshots or GIFs that show your application in action. Use tools like (C:\Users\DeanC\OneDrive\Videos\Screen Recordings\giphy.mp4)
+(https://giphy.com/apps/giphycapture) to record a GIF of your application.
 
 ![Application Screenshot](path/to/your/screenshot.png)
 

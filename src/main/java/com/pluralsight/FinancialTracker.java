@@ -262,7 +262,7 @@ public class FinancialTracker {
                     break;
                 case "2":
                     LocalDate previousMonth = LocalDate.now().minusMonths(1);
-                    filterTransactionsByDate(previousMonth, LocalDate.now());
+                    filterTransactionsByDate(previousMonth.withDayOfMonth(1), previousMonth.withDayOfMonth(previousMonth.lengthOfMonth()));
                     break;
                 case "3":
                     LocalDate YearToDate = LocalDate.now().withDayOfYear(1);
@@ -271,7 +271,7 @@ public class FinancialTracker {
 
                 case "4":
                     LocalDate PreviousYear = LocalDate.now().minusYears(1);
-                    filterTransactionsByDate(PreviousYear, LocalDate.now());
+                    filterTransactionsByDate(PreviousYear.withDayOfYear(1), PreviousYear.withDayOfYear(PreviousYear.lengthOfYear()));
                     break;
                 case "5":
                     Scanner myscanner = new Scanner(System.in);
